@@ -1,7 +1,10 @@
-data "aws_vpc" "default" {
-  id = aws_vpc.default.vpc_id
+data "aws_vpc" "selected" {
+  filter {
+    name = "tag:Name"
+    values = ["sandbox-vpc"]
+  }
 }
 
 output "vpc_id" {
-    value = data.aws_vpc.default.id
+  value = data.aws_vpc.selected.id
 }

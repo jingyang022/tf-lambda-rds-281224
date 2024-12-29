@@ -29,7 +29,7 @@ resource "aws_lambda_function" "func" {
     variables = {
        	DB_NAME = "sandboxdb",
         USERNAME = "admin",
-        PASSWORD = "xAR7Ff6(:-99ATskvFDrxe>1Hs~#",
+        PASSWORD = "",  # get password from Secrets Manager
         RDS_ENDPOINT = "sandbox-rds.cnge2fzfx0rs.ap-southeast-1.rds.amazonaws.com"
     }
   }

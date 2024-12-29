@@ -1,11 +1,26 @@
-data "aws_iam_policy" "lambda_full_access" {
-  name = "AWSLambda_FullAccess"
+# Create IAM policy to attach to Lambda execution role to create routes to RDS
+resource "aws_iam_policy" "lambda_vpc_access" {
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "ec2:CreateNetworkInterface",
+          "ec2:DeleteNetworkInterface",
+          "ec2:DescribeNetworkInterfaces"
+          ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
-resource "aws_iam_policy_attachment" "lambda_policy_attachment" {
-  name = "lambda_policy_attachment"
-  roles = aws_iam_role.lambda_exec_role.name
-  policy_arn = data.aws_iam_policy.lambda_full_access.arn
+resource "aws_iam_policy_attachment" "lambda_vpc_access_attach" {
+  name = "lambda_vpc_access_attach"
+  roles = [aws_iam_role.lambda_exec_role.name]
+  #policy_arn = data.aws_iam_policy.lambda_full_access.arn
+  policy_arn = aws_iam_policy.lambda_vpc_access.arn
 }
 
 resource "aws_iam_role" "lambda_exec_role" {

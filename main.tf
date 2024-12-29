@@ -13,7 +13,7 @@ data "archive_file" "lambda" {
 resource "aws_lambda_function" "func" {
  function_name = "yap-moviesdb-api"
  role          = aws_iam_role.lambda_exec_role.arn
- handler       = "hello.lambda_handler"
+ handler       = "lambda_function.lambda_handler"
  runtime       = "python3.8"
  filename      = data.archive_file.lambda.output_path
 
@@ -27,16 +27,16 @@ resource "aws_lambda_function" "func" {
   # Environment Variables
   environment {
     variables = {
-       	DB_NAME = "",
-        USERNAME = "",
-        PASSWORD = "",
-        RDS_ENDPOINT = ""
+       	DB_NAME = "sandboxdb",
+        USERNAME = "admin",
+        PASSWORD = "xAR7Ff6(:-99ATskvFDrxe>1Hs~#",
+        RDS_ENDPOINT = "sandbox-rds.cnge2fzfx0rs.ap-southeast-1.rds.amazonaws.com"
     }
   }
 }
 
 # aws_cloudwatch_log_group to get the logs of the Lambda execution.
 resource "aws_cloudwatch_log_group" "lambda_log_group" {
- name              = "/aws/lambda/yap-process-s3events"
+ name              = "/aws/lambda/yap-moviesdb-api"
  retention_in_days = 14
 }
